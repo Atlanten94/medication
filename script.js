@@ -1,3 +1,4 @@
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
   import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
@@ -302,16 +303,13 @@
                   };
                   actionsCell.appendChild(bestellenButton);
               });
-          }, {
-              onlyOnce: false
-          }, (error) => {
-              console.error("Fehler beim Laden der Daten: ", error);
           });
       }
 
       // Initialisiere die Seite mit geladenen Daten
       loadData();
   });
+
 
 
 
