@@ -20,24 +20,6 @@
   const database = getDatabase(app);
   const analytics = getAnalytics(app);
 
-    // Höchste ID ermitteln
-    function getMaxId(callback) {
-        const dataRef = ref(database, 'medications');
-        onValue(dataRef, (snapshot) => {
-            let maxId = 0;
-            snapshot.forEach((childSnapshot) => {
-                const data = childSnapshot.val();
-                const id = parseInt(data.id);
-                if (id > maxId) {
-                    maxId = id;
-                }
-            });
-            callback(maxId);
-        }, {
-            onlyOnce: true // Dies wird nur einmal ausgeführt, um die höchste ID zu ermitteln
-        });
-    }
-
   document.addEventListener("DOMContentLoaded", function() {
       const popupForm = document.getElementById("popupForm");
       const openFormBtn = document.getElementById("openFormBtn");
