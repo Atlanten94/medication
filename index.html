@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="" class="header-link"><img src="LWL Logo.png" alt="LWL-Logo"></a>
+            <h1 id="title">SL01 Management</h1>
+        </div>
+        <div class="navContainer">
+            <nav class="navbar">
+                <a href="" name="linkNachtwachenliste">Nachtwachenliste</a>
+                <a href="" name="linkLaboruntersuchung">Laboruntersuchung</a>
+                <a href="" name="linkMedikamente">Medikamente</a>
+                <a href="" name="Aufnahmebogen">Aufnahmebogen</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="searchAndButtonContainer">
+            <div class="medSearch">
+                <input type="text" placeholder="Medikament Suchen" class="medSearchInput">
+            </div>
+            <div class="buttonContainer">
+                <button id="openFormBtn" class="openFormBtn">+ Hinzufügen</button>
+            </div>
+        </div>
+
+        <!-- Popup Formular -->
+        <div id="popupForm" class="popupForm">
+            <div class="popupContent">
+                <span class="closeBtn">&times;</span>
+                <h2>Medikament Hinzufügen</h2>
+                <form id="medForm">
+                    <div class="formLeft">
+
+                        <div class="medFormElement">
+                        <label for="priority">Priorität:</label>
+                        <select id="priority" name="priority">
+                            <option value="Hoch">Hoch</option>
+                            <option value="Mittel">Mittel</option>
+                            <option value="Niedrig">Niedrig</option>
+                            <option value="Sonstiges">Sonstiges</option>
+                        </select>
+                        
+                    </div>
+
+                    <div class="medFormElement">
+                        <label for="brand">Handelsname:</label>
+                        <input type="text" id="brand" name="brand">
+                    </div>
+
+                    <div class="medFormElement">
+                        <label for="agent">Wirkstoff:</label>
+                        <input type="text" id="agent" name="agent">
+                    </div>
+                        
+
+                    <div class="medFormElement">
+                            <label for="dose">Dosierung:</label>
+                            <input type="text" id="dose" name="dose">
+                        </div>
+                        
+
+                        <div class="medFormElement">
+                            <label for="id">ID:</label>
+                            <input type="text" id="id" name="id" readonly>
+                        </div>
+                        
+                    </div>
+                    <div class="formRight">
+
+                        <div class="medFormElement">
+                            <label for="form">Darreichungsform:</label>
+                            <select id="form" name="form">
+                                <option value="TBL">TBL</option>
+                                <option value="FTBL">FTBL</option>
+                                <option value="RET">RET</option>
+                                <option value="KPSL">KPSL</option>
+                                <option value="LSG">LSG</option>
+                                <option value="IHP">IHP</option>
+                                <option value="SAL">SAL</option>
+                                <option value="CRE">CRE</option>
+                                <option value="SUP">SUP</option>
+                            </select>
+                        </div>
+
+
+                        <div class="medFormElement">
+                            <label for="storage">Vorrat:</label>
+                        <input type="number" id="storage" name="storage">
+                        </div>
+                        
+
+                        <div class="medFormElement">
+                            <label for="open">Anbruch:</label>
+                        <input type="number" id="open" name="open">
+                        </div>
+                        
+                        
+                        <div class="checkboxContainer">
+                            <div>
+                            <label for="btm">BTM</label>
+                            <input type="checkbox" id="btm" name="btm">
+                            </div>
+                            <div>
+                            <label for="ab">AB</label>
+                            <input type="checkbox" id="ab" name="ab">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="addMedBtn">Hinzufügen</button>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <table id="medTable">
+                <thead>
+                    <tr>
+                        <th id="medId">ID</th>
+                        <th id="medPriority">Priorität</th>
+                        <th id="medBrand">Handelsname</th>
+                        <th id="medIndication">I</th>
+                        <th id="medAgent">Wirkstoff</th>
+                        <th id="medDose">Dosierung</th>
+                        <th id="medForm">Darreichungsform</th>
+                        <th id="medMinStorage">Mindestbestand</th>
+                        <th id="medStorage">Vorrat</th>
+                        <th id="medOpen">Anbruch</th>
+                        <th id="medCheck">Prüfung</th>
+                        <th id="medUpdate">Zuletzt Aktualisiert</th>
+                        <th id="medOrderDate">Zuletzt bestellt</th>
+                        <th id="medAction">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamisch hinzugefügte Zeilen erscheinen hier -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer></footer>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
+

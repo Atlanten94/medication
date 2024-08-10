@@ -1,0 +1,245 @@
+body{
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header-container{
+    display: grid;
+    width:100%;
+    grid-template-areas: "left center right";
+    
+}
+
+.header-container a img{
+    grid-area: left;
+}
+
+.header-container a{
+    justify-self: center;
+    align-self: center;
+}
+
+.header-link img{
+    width:100px;
+    height:60px;
+}
+#title{
+    color: #00325f;
+    grid-area: center;
+    justify-self: center;
+    align-self: center;
+    }
+
+.navbar
+{
+display: flex;
+height:25px;
+justify-content: space-between;
+align-items: center;
+padding:5px 10% 5px 10%;
+background-color: rgb(127, 127, 127);
+border-bottom: 5px solid white;
+}
+
+.navbar a{
+    padding:0 5px 0 5px;
+    color:#00325f;
+    text-decoration: none;
+}
+
+
+
+/* Haupt-Container für Suche und Button */
+.searchAndButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 10%;
+}
+
+.medSearch {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.medSearchInput {
+    width: 200px;
+    height: 30px;
+    text-align: center;
+}
+
+/* Container für den Button */
+.buttonContainer {
+    flex-grow: 0;
+}
+
+/* Button zum Öffnen des Formulars */
+.openFormBtn {
+    height: 30px;
+    background-color: #00325f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.openFormBtn:hover {
+    background-color: #005792;
+}
+
+/* Popup-Formular-Stil */
+.popupForm {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.popupContent {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 690px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+}
+
+.popupContent h2 {
+    color: #00325f;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.formLeft, .formRight {
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    margin: 10px;
+}
+
+.medFormElement{
+    display: flex;
+    justify-content: space-between;
+    margin:10px;
+}
+
+.medFormElement input, select{
+    width: 150px;
+}
+.checkboxContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 40px;
+    margin-right:50px;
+}
+
+.checkboxContainer label {
+    margin-right: 10px;
+}
+
+/* Button zum Hinzufügen */
+#addMedBtn {
+    width: 100%;
+    padding: 10px;
+    background-color: #00325f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#addMedBtn:hover {
+    background-color: #005792;
+}
+
+.closeBtn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+.medSearch
+{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.medSearchInput{
+    width: 200px;
+    height: 30px;
+    text-align: center;
+    text-justify: center;
+}
+#medTable
+{
+    margin-top: 20px;
+    border-top: 2px solid rgb(113, 189, 255);
+    border-bottom: 2px solid rgb(113, 189, 255);
+}
+
+table{
+    width:100%;
+    border-collapse: collapse;
+    font-size: small;
+}
+
+thead{
+    background-color: #00325f;
+    color: white;
+    height:40px;
+}
+
+th {
+    text-align: center;
+    font-weight:bold;
+    border-collapse: collapse;
+    color:white;
+    padding: 5px;
+}
+
+td{
+    text-align: center;
+    font-weight: normal;
+    border-collapse: collapse;
+    color: #00325f;
+    padding: 5px;
+}
+
+#medId
+{
+    background-color: rgb(189, 224, 255);
+    color:#00325f;
+}
+
+#medPriority
+{
+    background-color: rgb(189, 224, 255);
+    color: #00325f;
+}
