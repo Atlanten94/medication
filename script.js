@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Öffnet das Popup-Formular
     openFormBtn.onclick = function() {
+      alert('Form Button Funktioniert')
         popupForm.style.display = "flex";
         isEditing = false; // Setze den Modus auf Hinzufügen
         document.getElementById("id").value = ""; // ID bei Hinzufügen zurücksetzen
