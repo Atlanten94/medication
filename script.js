@@ -1,13 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const popupForm = document.getElementById("popupForm");
-    const openFormBtn = document.getElementById("openFormBtn");
-    const closeBtn = document.getElementsByClassName("closeBtn")[0];
-    const addMedBtn = document.getElementById("addMedBtn");
-    let isEditing = false; // Zustand, um zu überprüfen, ob wir im Bearbeitungsmodus sind
-    let currentRow; // Zeile, die bearbeitet wird
-    let nextId = 1; // Zähler für die eindeutige ID
-
-    // Firebase-Konfiguration und Initialisierung
+ // Firebase-Konfiguration und Initialisierung
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
     const firebaseConfig = {
@@ -22,6 +13,15 @@ document.addEventListener("DOMContentLoaded", function() {
     };
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
+
+document.addEventListener("DOMContentLoaded", function() {
+    const popupForm = document.getElementById("popupForm");
+    const openFormBtn = document.getElementById("openFormBtn");
+    const closeBtn = document.getElementsByClassName("closeBtn")[0];
+    const addMedBtn = document.getElementById("addMedBtn");
+    let isEditing = false; // Zustand, um zu überprüfen, ob wir im Bearbeitungsmodus sind
+    let currentRow; // Zeile, die bearbeitet wird
+    let nextId = 1; // Zähler für die eindeutige ID
 
     // Höchste ID ermitteln
     function getMaxId(callback) {
