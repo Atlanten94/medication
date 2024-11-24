@@ -330,12 +330,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("ab").checked = false;
     };
     
-    function orderMedication(id) {
-        
+  function orderMedication(id) {
         console.log("Bestellen für ID:", id);
         const currentDate = new Date().toLocaleDateString();
-        const dataRef = ref(database, medications/{id});
-        alert('Processing data');
+        const dataRef = ref(database, `medications/${id}`);
         update(dataRef, { lastOrdered: currentDate });
     }
     
