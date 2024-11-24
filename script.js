@@ -331,6 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     
     function orderMedication(id) {
+        alert('processing');
         console.log("Bestellen für ID:", id);
         const currentDate = new Date().toLocaleDateString();
         const dataRef = ref(database, medications/{id});
