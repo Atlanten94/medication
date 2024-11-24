@@ -5,80 +5,104 @@
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <a href="" class="header-link"><img src="LWL Logo.png" alt="LWL-Logo"></a>
-            <h1 id="title">SL01 Management</h1>
-        </div>
-        <div class="navContainer">
-            <nav class="navbar">
-                <a href="" name="linkNachtwachenliste">Nachtwachenliste</a>
-                <a href="" name="linkLaboruntersuchung">Laboruntersuchung</a>
-                <a href="" name="linkMedikamente">Medikamente</a>
-                <a href="" name="Aufnahmebogen">Aufnahmebogen</a>
-            </nav>
-        </div>
-    </header>
-    <main>
-        <div class="searchAndButtonContainer">
-            <div class="medSearch">
-                <input type="text" placeholder="Medikament Suchen" class="medSearchInput">
+  <header>
+    <div class="header-container">
+        <a href="index.html" class="header-link">
+            <img src="LWL Logo.png" alt="LWL-Logo">
+        </a>
+        <h1 id="title">SL01 Management</h1>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigation umschalten">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">Nachtwachenliste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Laboruntersuchung</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Medikamente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Aufnahmebogen</a>
+                    </li>
+                </ul>
             </div>
-            <div class="buttonContainer">
-                <button id="openFormBtn" class="openFormBtn">+ Hinzufügen</button>
-            </div>
         </div>
+    </nav>
+    
+</header>
 
+<main>
+    <div class="container mt-4">
+        <div class="row align-items-center custom-grid">
+            <!-- Linker Bereich (Leer) -->
+            <div class="col d-none d-md-block"></div>
+            <!-- Mittlerer Bereich (Suchfeld) -->
+            <div class="col-auto text-center">
+                <input type="text" class="form-control" id="medSearchInput" placeholder="Medikament Suchen">
+            </div>
+            
+            <!-- Rechter Bereich (Button) -->
+            <div class="col text-end text-md-end">
+                <button data-text-normal="+ Hinzufügen" data-text-large="+" id="openFormBtn" class="btn btn-primary w-100 w-md-auto"></button>
+            </div>
+        </div>
+    </div>
+    
         <!-- Popup Formular -->
         <div id="popupForm" class="popupForm">
-            <div class="popupContent">
+            <div class="popupContent ">
                 <span class="closeBtn">&times;</span>
                 <h2>Medikament Hinzufügen</h2>
-                <form id="medForm">
-                    <div class="formLeft">
+
+
+                <form id="medFormular" class="d-grid">
+                <!--           L I N K E   S P A L T E        -->
+                    <div>
+                        <div class="medFormElement">
+                            <label for="priority">Priorität:</label>
+                            <select id="priority" name="priority">
+                                <option value="" disabled selected>Bitte auswählen</option>
+                                <option value="Hoch">Hoch</option>
+                                <option value="Mittel">Mittel</option>
+                                <option value="Niedrig">Niedrig</option>
+                                <option value="Sonstiges">Sonstiges</option>
+                            </select>
+                        </div>
 
                         <div class="medFormElement">
-                        <label for="priority">Priorität:</label>
-                        <select id="priority" name="priority">
-                            <option value="Hoch">Hoch</option>
-                            <option value="Mittel">Mittel</option>
-                            <option value="Niedrig">Niedrig</option>
-                            <option value="Sonstiges">Sonstiges</option>
-                        </select>
-                        
-                    </div>
-
-                    <div class="medFormElement">
-                        <label for="brand">Handelsname:</label>
-                        <input type="text" id="brand" name="brand">
-                    </div>
-
-                    <div class="medFormElement">
-                        <label for="agent">Wirkstoff:</label>
-                        <input type="text" id="agent" name="agent">
-                    </div>
-                        
-
-                    <div class="medFormElement">
+                            <label for="brand">Handelsname:</label>
+                            <input type="text" id="brand" name="brand">
+                        </div>
+                        <div class="medFormElement">
+                            <label for="agent">Wirkstoff:</label>
+                            <input type="text" id="agent" name="agent">
+                        </div>
+                        <div class="medFormElement">
                             <label for="dose">Dosierung:</label>
                             <input type="text" id="dose" name="dose">
                         </div>
-                        
-
                         <div class="medFormElement">
                             <label for="id">ID:</label>
                             <input type="text" id="id" name="id" readonly>
                         </div>
-                        
                     </div>
-                    <div class="formRight">
-
+                    <!--           R E C H T E   S P A L T E        -->
+                    <div>
                         <div class="medFormElement">
-                            <label for="form">Darreichungsform:</label>
+                            <label for="form" id="formLabel">DF:</label>
                             <select id="form" name="form">
+                                <option value="" disabled selected>Bitte auswählen</option>
                                 <option value="TBL">TBL</option>
                                 <option value="FTBL">FTBL</option>
                                 <option value="RET">RET</option>
@@ -91,19 +115,23 @@
                             </select>
                         </div>
 
-
                         <div class="medFormElement">
                             <label for="storage">Vorrat:</label>
-                        <input type="number" id="storage" name="storage">
+                            <input type="number" id="storage" name="storage">
                         </div>
                         
-
                         <div class="medFormElement">
                             <label for="open">Anbruch:</label>
-                        <input type="number" id="open" name="open">
+                            <input type="number" id="open" name="open">
                         </div>
-                        
-                        
+                        <div id="scanner-container" style="width: 100%; max-width: 400px; margin: auto; text-align: center;">
+                            <div id="scanner" style="width: 100%; height: 300px; background: #ccc;"></div>
+                            <p id="barcodeResult">Kein Barcode erkannt</p>
+                        </div>
+                        <div class="medFormElement">
+                            <label for="barcodeInput"></label>
+                            <input type="text" id="barcodeInput" name="barcodeInput" placeholder="Scanne Barcode">
+                        </div>
                         <div class="checkboxContainer">
                             <div>
                             <label for="btm">BTM</label>
@@ -114,20 +142,24 @@
                             <input type="checkbox" id="ab" name="ab">
                             </div>
                         </div>
+                        
                     </div>
-                    <button type="button" id="addMedBtn">Hinzufügen</button>
                 </form>
+                <button type="button" id="addMedBtn">Hinzufügen</button>
+                <button type="button" id="addMedBtnCard">Speichern</button>
             </div>
         </div>
+        
 
-        <div>
-            <table id="medTable">
+    <!-- ---------------------------------   R E S P O N S I V E    M E D I K A M E N T E N    T A B E L L E-->
+        <div class="table-responsive mt-4 d-none d-lg-block">
+            <table id="medTable" class="table table-striped table-hover">
                 <thead>
-                    <tr>
+                    <tr >
                         <th id="medId">ID</th>
                         <th id="medPriority">Priorität</th>
                         <th id="medBrand">Handelsname</th>
-                        <th id="medIndication">I</th>
+                        <th id="medIndication">Indikation</th>
                         <th id="medAgent">Wirkstoff</th>
                         <th id="medDose">Dosierung</th>
                         <th id="medForm">Darreichungsform</th>
@@ -140,14 +172,20 @@
                         <th id="medAction">Aktionen</th>
                     </tr>
                 </thead>
-                <tbody>
+                
+                <tbody style="overflow-y:auto;">
                     <!-- Dynamisch hinzugefügte Zeilen erscheinen hier -->
                 </tbody>
+
             </table>
         </div>
+        
+        <div id="medCards" class="d-block d-lg-none" style="overflow-y:auto; max-height: calc(100vh - 250px); margin-top:30px;">
+        <!-- Dynamisch erstellte Karten -->
+    </div>
+
     </main>
     <footer></footer>
     <script type="module" src="script.js"></script>
 </body>
 </html>
-
