@@ -1,103 +1,119 @@
-body{
+body {
     background-color: white;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.header-container{
+header {
+    position: sticky;
+    top: 0; /* Abstand vom oberen Rand */
+    z-index: 1000; /* Stellt sicher, dass der Header über anderen Elementen liegt */
+    background-color: white; /* Optional: Hintergrundfarbe */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Schatten für visuelle Trennung */
+}
+
+
+
+.header-container {
     display: grid;
-    width:100%;
     grid-template-areas: "left center right";
+    padding: 15px 20px; /* Abstand oben/unten und links/rechts */
+    align-items: center;
+    width: 100%;
     
 }
 
-.header-container a img{
-    grid-area: left;
+.header-link img {
+    width: 100px;
+    height: auto;
+    justify-self: start; /* Sorgt dafür, dass das Logo links bleibt */
 }
 
-.header-container a{
-    justify-self: center;
-    align-self: center;
-}
-
-.header-link img{
-    width:100px;
-    height:60px;
-}
-#title{
-    color: #00325f;
-    grid-area: center;
-    justify-self: center;
-    align-self: center;
-    }
-
-.navbar
-{
-display: flex;
-height:25px;
-justify-content: space-between;
-align-items: center;
-padding:5px 10% 5px 10%;
-background-color: rgb(127, 127, 127);
-border-bottom: 5px solid white;
-}
-
-.navbar a{
-    padding:0 5px 0 5px;
+#title {
     color:#00325f;
-    text-decoration: none;
+    
+    margin: 0 20px; /* Abstand zur linken und rechten Seite der Überschrift */
+    justify-self: center; /* Zentrierung im Grid */
 }
 
-
-
-/* Haupt-Container für Suche und Button */
-.searchAndButtonContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 0 10%;
+nav{
+    background-color: #00325f;
 }
-
-.medSearch {
-    flex-grow: 1;
-    display: flex;
+.navbar-nav {
     justify-content: center;
-    align-items: center;
+    width: 100%;
 }
 
-.medSearchInput {
-    width: 200px;
-    height: 30px;
+.navbar .nav-link {
+    margin: 0 15px; /* Abstand zwischen den Links */
+    padding: 5px 10px; /* Zusätzliche Innenabstände */
     text-align: center;
 }
 
-/* Container für den Button */
-.buttonContainer {
-    flex-grow: 0;
+/**************** SUCH UND BUTTON CONTAINER ******************/
+
+.custom-grid {
+    display: grid;
+    grid-template-areas: left center right;
+    grid-template-columns: 1fr auto 1fr; /* Drei Spalten: Links und Rechts gleich breit */
+    align-items: center; /* Vertikale Zentrierung */
+    gap: 10px; /* Abstand zwischen den Bereichen */
+}
+
+.col{
+    grid-column:1;
+}
+
+.col-auto{
+    grid-column:2;
+}
+
+.text-end{
+    grid-column:3;
+    text-align:right;
+}
+.btn-primary {
+    background-color: #00325f;/* Primärfarbe anpassen */
+    border-color: #005792;
+}
+
+.btn-primary:hover {
+    background-color: #005792;  /* Dunklerer Hover-Effekt */
+}
+
+#medSearchInput {
+    max-width: 300px;
+    text-align: center;
 }
 
 /* Button zum Öffnen des Formulars */
-.openFormBtn {
-    height: 30px;
+#openFormBtn {
+    float:right;
+    width:auto;
+    text-align:center;
+    max-width:200px;
     background-color: #00325f;
     color: white;
-    border: none;
-    padding: 5px 10px;
     cursor: pointer;
-    font-size: 14px;
-    border-radius: 5px;
-    margin-left: auto;
+    transition: transform 0.2s ease;
 }
 
-.openFormBtn:hover {
-    background-color: #005792;
+#openFormBtn:hover {
+    transform: scale(1.05);
+}
+
+#openFormBtn:active {
+    transform: scale(0.95);
+}
+
+#openFormBtn::after{
+    content:attr(data-text-normal);
 }
 
 /* Popup-Formular-Stil */
 .popupForm {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 999;
     left: 0;
     top: 0;
     width: 100%;
@@ -106,6 +122,17 @@ border-bottom: 5px solid white;
     background-color: rgba(0,0,0,0.4);
     justify-content: center;
     align-items: center;
+}
+
+#medFormular{
+    grid-template-columns: 1fr 1fr; /* Zwei Spalten */
+    gap: 15px;
+    padding:0 30px 0 30px;
+}
+
+#medFormular > div {
+    display: flex;
+    flex-direction: column;
 }
 
 .popupContent {
@@ -124,13 +151,6 @@ border-bottom: 5px solid white;
     margin-bottom: 20px;
 }
 
-.formLeft, .formRight {
-    display: inline-block;
-    vertical-align: top;
-    width: 45%;
-    margin: 10px;
-}
-
 .medFormElement{
     display: flex;
     justify-content: space-between;
@@ -140,6 +160,7 @@ border-bottom: 5px solid white;
 .medFormElement input, select{
     width: 150px;
 }
+
 .checkboxContainer {
     display: flex;
     justify-content: space-around;
@@ -150,6 +171,10 @@ border-bottom: 5px solid white;
 
 .checkboxContainer label {
     margin-right: 10px;
+}
+
+#formLabel::after{
+    content:attr(data-text-normal);
 }
 
 /* Button zum Hinzufügen */
@@ -168,6 +193,22 @@ border-bottom: 5px solid white;
     background-color: #005792;
 }
 
+/* Button zum Hinzufügen */
+#addMedBtnCard {
+    width: 100%;
+    padding: 10px;
+    background-color: #00325f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#addMedBtnCard:hover {
+    background-color: #005792;
+}
+
 .closeBtn {
     color: #aaa;
     float: right;
@@ -182,7 +223,52 @@ border-bottom: 5px solid white;
     cursor: pointer;
 }
 
+#medTable {
+    font-size: 12px; /* Kleinere Schrift für bessere Übersicht */
+    border-bottom: 2px solid rgb(62, 62, 62);
+}
 
+.table-dark{
+    background-color: #00325f;
+}
+
+thead{
+    
+    background-color: #00325f;
+    color: white;
+    height:40px;
+}
+
+th {
+    position:sticky;
+    text-align: center;
+    font-weight:bold;
+    border-collapse: collapse;
+    color:white;
+    padding: 5px;
+}
+
+th:hover{
+    cursor:pointer;
+}
+tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-responsive {
+    overflow-y: auto;
+    max-height: calc(100vh - 250px);
+}
+
+
+
+
+.table-responsive thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
 
 .medSearch
 {
@@ -197,35 +283,14 @@ border-bottom: 5px solid white;
     text-align: center;
     text-justify: center;
 }
-#medTable
-{
-    margin-top: 20px;
-    border-top: 2px solid rgb(113, 189, 255);
-    border-bottom: 2px solid rgb(113, 189, 255);
-}
 
 table{
     width:100%;
     border-collapse: collapse;
-    font-size: small;
-}
-
-thead{
-    background-color: #00325f;
-    color: white;
-    height:40px;
-}
-
-th {
-    text-align: center;
-    font-weight:bold;
-    border-collapse: collapse;
-    color:white;
-    padding: 5px;
+    font-size:medium;
 }
 
 td{
-    text-align: center;
     font-weight: normal;
     border-collapse: collapse;
     color: #00325f;
@@ -242,4 +307,230 @@ td{
 {
     background-color: rgb(189, 224, 255);
     color: #00325f;
+}
+
+
+/*****K A R T E N A N S I C H T *********************/
+
+#medCards .card {
+    margin: 1rem 0;
+    font-size: larger;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+/* KARTENLAYOUT: Tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* K A R T E N L A Y O U T*/
+
+    #addMedBtnCard {
+        font-size: 1.2em;
+        padding: 10px;
+        margin-top: 20px;
+    }
+
+    .card-body{
+        margin-left:35px;
+    }
+    .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Zwei Spalten */
+        gap: 15px;
+        padding:0 30px 0 30px;
+    }
+
+    .grid-layout > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tablet-layout .card-body {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .tablet-layout .card-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .d-lg-none {
+        display: block !important; /* Zeige die Karten */
+    }
+    .d-lg-block {
+        display: none !important; /* Verstecke die Tabelle */
+    }
+}
+
+
+@MEDIA  (max-width:1024px){
+    /** P O P U P F O R M U L A R**/
+    #medFormular{
+        grid-template-columns: 1fr; /* Zwei Spalten */
+        gap: 15px;
+        padding:0 30px 0 30px;
+    }
+
+    .popupContent {
+        position:fixed;
+        top:145px;
+        width: 100%;
+        height: calc(100% - 60px); /* Adjust height to be below the header */
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        overflow-y: auto;
+    }
+
+    .popupContent .medFormElement {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .popupContent label {
+        flex: 1;
+        font-size: 1.2em;
+    }
+
+    .popupContent input,
+    .popupContent select {
+        flex: 2;
+        font-size: 1.2em;
+        padding: 5px;
+    }
+}
+/******************************** R E S P O N S I V E *****************************************************/
+
+
+
+
+
+@media (max-width: 991.98px) {
+    .header-link img {
+        width: 80px; /* Kleinere Größe für Tablets */
+        height: auto;
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 139px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #00325f;
+        z-index: 1050;
+        overflow-y: auto;
+    }
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: flex-start;
+        height: 100%;
+        padding-top: 20px; /* Abstand von oben */
+        padding-left:20px;
+    }
+
+    .navbar-nav .nav-link {
+        margin-bottom: 15px; /* Vertikaler Abstand zwischen den Links */
+    }
+    
+    .nav-link {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    /* P O P U P F O R M U L A R*/
+    .popupContent {
+        position:fixed;
+        top:139px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #openFormBtn::after {
+        content:attr(data-text-large);
+    }
+
+    #openFormBtn{
+        max-width:50px;
+        height:auto;
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 139px;
+    }
+    /* P O P U P F O R M U L A R*/
+    #medFormular{
+        padding:0 20px 0 0;
+    }
+    /* KARTENLAYOUT: Smartphones (<768px) */
+    .grid-layout {
+        display: block; /* Einspaltige Anzeige */
+        padding:0 20% 0 20%;
+    }
+
+    .mobile-layout .grid-layout {
+        display: block;
+    }
+
+    .mobile-layout .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-layout .card-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-link img {
+        content: url('LWL Logo Klein.png'); /* Austausch des Logos auf Smartphones */
+        width: 60px; /* Noch kleinere Größe für Smartphones */
+        height: auto
+    }
+
+    #title {
+        font-size: 1.5rem; /* Noch kleinere Überschrift */
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 115px;
+    }
+
+    /* P O P U P F O R M U L A R*/
+    .popupContent {
+        position:fixed;
+        top:113px;
+        padding:20px;
+        padding-left:10px;
+    }
+
+    #formLabel::after{
+        content:attr(data-text-large);
+    }
+    
+    #medFormular{
+        padding:0 5px 0 0;
+    }
+
+    /* KARTENLAYOUT: Smartphones (<576px) */
+    .grid-layout{
+        display: block; /* Einspaltige Anzeige */
+        padding:0 10% 0 10%;
+        }
+    
 }
