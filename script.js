@@ -427,8 +427,8 @@ document.getElementById("startScannerBtn").addEventListener("click", function ()
             target: scannerElement, // Kamera-Container
             constraints: {
                 facingMode: { ideal: "environment" }, // Rückkamera bevorzugen
-                width: { min: 640, ideal: 1280, max: 1920 }, // Auflösung anpassen
-                height: { min: 480, ideal: 720, max: 1080 }
+            width: { min: 320, ideal: 320, max: 320 }, // Standardauflösung
+            height: { min: 240, ideal: 240, max: 240 }
             }
             
         },
@@ -877,7 +877,6 @@ document.querySelectorAll("#medTable th").forEach((th, index) => {
     });
 });
 
-
 document.getElementById('medSearchInput').addEventListener('input', function() {
     let filter = this.value.toLowerCase();
     let tableRows = document.querySelectorAll('#medTable tbody tr');
@@ -901,115 +900,3 @@ document.getElementById('medSearchInput').addEventListener('input', function() {
 
 
 
-/*********KAMERA FÜR BARCODE SCANNER */
-document.addEventListener("DOMContentLoaded", function () {
-
-   // Funktion zur Verarbeitung des gescannten Barcodes
-function processScannedBarcode(barcode) {
-    const dataRef = ref(database, 'medications');
-
-    onValue(dataRef, (snapshot) => {
-        let found = false;
-
-        // Durchlaufe alle Medikamente in der Datenbank
-        snapshot.forEach((childSnapshot) => {
-            const medication = childSnapshot.val();
-
-            // Prüfen, ob der Barcode in der Barcode-Liste enthalten ist
-            if (medication.barcodes && medication.barcodes.includes(barcode)) {
-                found = true;
-
-                // Bestand erhöhen
-                const updatedStorage = parseInt(medication.storage, 10) + 1;
-
-                // Aktualisierung in Firebase
-                const medicationRef = ref(database, `medications/${medication.id}`);
-                update(medicationRef, {
-                    storage: updatedStorage,
-                    lastUpdated: new Date().toLocaleDateString(),
-                });
-
-                // Erfolgsmeldung anzeigen
-                alert(`Bestand von ${medication.brand} wurde aktualisiert. Neuer Bestand: ${updatedStorage}`);
-                loadData(); // Tabelle und Karten aktualisieren
-            }
-        });
-
-        if (!found) {
-            // Wenn Barcode nicht gefunden wurde
-            alert("Medikament nicht gefunden. Bitte neues Medikament hinzufügen.");
-            openFormBtn.click(); // Öffnet das Formular
-            document.getElementById("barcodeInput").value = barcode; // Barcode vorausfüllen
-        }
-    }, { onlyOnce: true });
-}
-
- // Barcode-Scanner initialisieren
-    function startScanner() {
-    const scannerElement = document.getElementById("scanner");
-    if (!scannerElement) {
-        console.error("Scanner element not found");
-        alert("Scanner element not found");
-        return;
-    }
-
-    Quagga.init({
-        inputStream: {
-            type: "LiveStream",
-            target: scannerElement, // Kamera-Container
-            constraints: {
-                facingMode: { ideal: "environment" }, // Rückkamera bevorzugen
-                width: { min: 640, ideal: 1280, max: 1920 }, // Auflösung anpassen
-                height: { min: 480, ideal: 720, max: 1080 }
-            }
-            
-        },
-        decoder: {
-            readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
-        }
-
-    }, function (err) {
-        if (err) {
-            console.error(err);
-            alert("Fehler beim Starten des Scanners.");
-            return;
-        }
-        Quagga.start();
-    });
-    alert("Erfolgreich gescannt!");
-}
-
-// Event-Listener für Kamera starten
-document.getElementById("startScannerBtn").addEventListener("click", () => {
-    startScanner();
-});
-
-// Event-Listener für Kamera stoppen
-document.getElementById("stopScannerBtn").addEventListener("click", () => {
-    Quagga.stop();
-});
-
-    // Event-Listener für Barcode-Scanner (Kamera-Unterstützung)
-    Quagga.onDetected(function (result) {
-        if (result && result.codeResult && result.codeResult.code) {
-            const barcode = result.codeResult.code; // Erkannten Barcode erfassen
-            document.getElementById("barcodeResult").innerText = `Barcode erkannt: ${barcode}`;
-
-            // Aufruf der bestehenden Funktion zur Verarbeitung
-            processScannedBarcode(barcode);
-
-            // Scanner stoppen nach erfolgreicher Erkennung
-            Quagga.stop();
-        }
-    });
-
-    // Event-Listener für Barcode-Scanner (Enter-Taste)
-    document.addEventListener('keydown', (event) => {
-        const inputField = document.getElementById('barcodeInput');
-        if (event.key === 'Enter' && inputField.value) {
-            const scannedBarcode = inputField.value.trim();
-            processScannedBarcode(scannedBarcode);
-            inputField.value = ""; // Eingabefeld leeren
-        }
-    });
-});
