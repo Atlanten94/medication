@@ -4,60 +4,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <div class="header-container">
-        <a href="index.html" class="header-link">
-            <img src="LWL Logo.png" alt="LWL-Logo">
-        </a>
-        <h1 id="title">SL01 Management</h1>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigation umschalten">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Nachtwachenliste</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Laboruntersuchung</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Medikamente</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Aufnahmebogen</a>
-                    </li>
-                </ul>
-            </div>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="header-link">
+                <img src="LWL Logo.png" alt="LWL-Logo">
+            </a>
+            <h1 id="title">SL01 Management</h1>
         </div>
-    </nav>
-    
-</header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigation umschalten">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#">Nachtwachenliste</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Laboruntersuchung</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Medikamente</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Aufnahmebogen</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+    </header>
 
-<main>
-    <div class="container mt-4">
-        <div class="row align-items-center custom-grid">
-            <!-- Linker Bereich (Leer) -->
-            <div class="col d-none d-md-block"></div>
-            <!-- Mittlerer Bereich (Suchfeld) -->
-            <div class="col-auto text-center">
-                <input type="text" class="form-control" id="medSearchInput" placeholder="Medikament Suchen">
-            </div>
-            
-            <!-- Rechter Bereich (Button) -->
-            <div class="col text-end text-md-end">
-                <button data-text-normal="+ Hinzufügen" data-text-large="+" id="openFormBtn" class="btn btn-primary w-100 w-md-auto"></button>
+    <main>
+        <div class="container mt-4">
+            <div class="row align-items-center custom-grid">
+                <!-- Linker Bereich (Leer) -->
+                <div class="col d-none d-md-block"></div>
+                <!-- Mittlerer Bereich (Suchfeld) -->
+                <div class="col-auto text-center">
+                    <input type="text" class="form-control" id="medSearchInput" placeholder="Medikament Suchen">
+                </div>
+                
+                <!-- Rechter Bereich (Button) -->
+                <div class="col text-end text-md-end">
+                    <button data-text-normal="+ Hinzufügen" data-text-large="+" id="openFormBtn" class="btn btn-primary w-100 w-md-auto"></button>
+                    <button id="startScannerBtn" class="btn btn-primary btn-icon-only">
+                        <i class="bi bi-upc-scan"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
     
         <!-- Popup Formular -->
         <div id="popupForm" class="popupForm">
@@ -124,14 +126,12 @@
                             <label for="open">Anbruch:</label>
                             <input type="number" id="open" name="open">
                         </div>
-                        <div id="scanner-container" style="width: 100%; max-width: 400px; margin: auto; text-align: center;">
-                            <div id="scanner" style="width: 100%; height: 300px; background: #ccc;"></div>
-                            <p id="barcodeResult">Kein Barcode erkannt</p>
-                        </div>
+                        
                         <div class="medFormElement">
                             <label for="barcodeInput"></label>
                             <input type="text" id="barcodeInput" name="barcodeInput" placeholder="Scanne Barcode">
                         </div>
+                        
                         <div class="checkboxContainer">
                             <div>
                             <label for="btm">BTM</label>
@@ -145,11 +145,17 @@
                         
                     </div>
                 </form>
-                <button type="button" id="addMedBtn">Hinzufügen</button>
+                <button type="button" id="addMedBtn" data-text-normal="Hinzufügen" data-text-large ="Speichern"></button>
                 <button type="button" id="addMedBtnCard">Speichern</button>
             </div>
         </div>
         
+        
+        <div id="scanner-container" >
+            <span class="closeBtn" id="closeBtnScanner">&times;</span>
+                <h2>Medikament Scannen</h2>
+            <div id="scanner" style="width: 100%; height: 300px; background: #ccc;"></div>
+        </div>
 
     <!-- ---------------------------------   R E S P O N S I V E    M E D I K A M E N T E N    T A B E L L E-->
         <div class="table-responsive mt-4 d-none d-lg-block">
@@ -182,10 +188,12 @@
         
         <div id="medCards" class="d-block d-lg-none" style="overflow-y:auto; max-height: calc(100vh - 250px); margin-top:30px;">
         <!-- Dynamisch erstellte Karten -->
-    </div>
+        </div>
 
     </main>
     <footer></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 </html>
