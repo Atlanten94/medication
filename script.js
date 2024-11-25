@@ -42,21 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p><strong>Handelsname:</strong> ${data.brand}</p>
                         <p><strong>Indikation:</strong> ${data.indication}</p>
                         <p><strong>Wirkstoff:</strong> ${data.agent}</p>
+                        <p><strong>Dosierung:</strong> ${data.dose}</p>
                     </div>
                     <!-- Rechte Spalte -->
                     <div>
-                        <p><strong>Dosierung:</strong> ${data.dose}</p>
                         <p><strong>Darreichungsform:</strong> ${data.form}</p>
                         <p><strong>Prüfung:</strong> <span class="checkStorage">${data.checkStorage}</span></p>
                         <p><strong>Zuletzt aktualisiert:</strong> ${data.lastUpdated}</p>
                         <p><strong>Zuletzt bestellt:</strong> ${data.lastOrdered || 'Nicht verfügbar'}</p>
+                        <p><strong>Vorrat:</strong> ${data.storage}</p>
+                        <div class="d-flex justify-content-left">
+                            <button class="btn btn-primary btn-sm me-2 edit-button" data-id="${data.id}">Bearbeiten</button>
+                            <button class="btn btn-success btn-sm order-button" data-id="${data.id}">Bestellen</button>
+                        </div>
                     </div>
                 </div>
                 <!-- Buttons -->
-                <div class="d-flex justify-content-center mt-3">
-                    <button class="btn btn-primary btn-sm me-2 edit-button" data-id="${data.id}">Bearbeiten</button>
-                    <button class="btn btn-success btn-sm order-button" data-id="${data.id}">Bestellen</button>
-                </div>
+                
             </div>
         `;
 
@@ -330,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("ab").checked = false;
     };
     
-  function orderMedication(id) {
+    function orderMedication(id) {
         console.log("Bestellen für ID:", id);
         const currentDate = new Date().toLocaleDateString();
         const dataRef = ref(database, `medications/${id}`);
@@ -351,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const popupForm = document.getElementById("popupForm");
     const openFormBtn = document.getElementById("openFormBtn");
     const closeBtn = document.getElementsByClassName("closeBtn")[0];
+    const closeBtnScanner = document.getElementById("closeBtnScanner")
     const addMedBtn = document.getElementById("addMedBtn");
     const medCards = document.getElementById("medCards");
     const medTable = document.getElementById("medTable").getElementsByTagName('tbody')[0];
@@ -360,8 +363,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /************************************************     B A R C O D E S C A N N E R ****************************************** */
-
-// Funktion zur Verarbeitung des gescannten Barcodes
+  // Funktion zur Verarbeitung des gescannten Barcodes
 function processScannedBarcode(barcode) {
     const dataRef = ref(database, 'medications');
 
@@ -397,20 +399,65 @@ function processScannedBarcode(barcode) {
             alert("Medikament nicht gefunden. Bitte neues Medikament hinzufügen.");
             openFormBtn.click(); // Öffnet das Formular
             document.getElementById("barcodeInput").value = barcode; // Barcode vorausfüllen
+            Quagga.stop();
         }
+        
     }, { onlyOnce: true });
+    
+}
+
+document.getElementById("startScannerBtn").addEventListener("click", function () {
+    const scannerForm = document.getElementById("scanner-container");
+    scannerForm.style.display = "block";
+    startScanner(); // Wird beim Klick aufgerufen
+});
+
+ // Barcode-Scanner initialisieren
+    function startScanner() {
+    const scannerElement = document.getElementById("scanner");
+    if (!scannerElement) {
+        console.error("Scanner element not found");
+        alert("Scanner element not found");
+        return;
+    }
+
+    Quagga.init({
+        inputStream: {
+            type: "LiveStream",
+            target: scannerElement, // Kamera-Container
+            constraints: {
+                facingMode: { ideal: "environment" }, // Rückkamera bevorzugen
+                width: { min: 640, ideal: 1280, max: 1920 }, // Auflösung anpassen
+                height: { min: 480, ideal: 720, max: 1080 }
+            }
+            
+        },
+        decoder: {
+            readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
+        }
+
+    }, function (err) {
+        if (err) {
+            console.error(err);
+            alert("Fehler beim Starten des Scanners.");
+            return;
+        }
+        Quagga.start();
+    });
 }
 
     // Event-Listener für Barcode-Scanner (Kamera-Unterstützung)
-    Quagga.onDetected(function (data) {
-        const barcode = data.codeResult.code; // Erkannten Barcode erfassen
-        document.getElementById("barcodeResult").innerText = `Barcode erkannt: ${barcode}`;
+    Quagga.onDetected(function (result) {
+        if (result && result.codeResult && result.codeResult.code) {
+            const barcode = result.codeResult.code; // Erkannten Barcode erfassen
+            document.getElementById("barcodeResult").innerText = `Barcode erkannt: ${barcode}`;
 
-        // Aufruf der bestehenden Funktion zur Verarbeitung
-        processScannedBarcode(barcode);
+            // Aufruf der bestehenden Funktion zur Verarbeitung
+            processScannedBarcode(barcode);
 
-        // Scanner stoppen nach erfolgreicher Erkennung
-        Quagga.stop();
+            // Scanner stoppen nach erfolgreicher Erkennung
+            Quagga.stop();
+        }
     });
 
     // Event-Listener für Barcode-Scanner (Enter-Taste)
@@ -423,27 +470,14 @@ function processScannedBarcode(barcode) {
         }
     });
 
-    function startScanner() {
-        Quagga.init({
-            inputStream: {
-                type: "LiveStream",
-                target: document.getElementById("scanner"), // Kamera-Container
-                constraints: {
-                    facingMode: "environment" // Rückkamera
-                }
-            },
-            decoder: {
-                readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
-            }
-        }, function (err) {
-            if (err) {
-                console.error(err);
-                alert("Fehler beim Starten des Scanners.");
-                return;
-            }
-            Quagga.start();
-        });
-}
+    // Barcode Scanner Schließen
+    closeBtnScanner.onclick = function() {
+        const scannerForm = document.getElementById("scanner-container");
+        scannerForm.style.display = "none";
+        Quagga.stop();
+        const tracks = Quagga.CameraAccess.getActiveStream().getTracks(); // Aktive Tracks abrufen
+        tracks.forEach(track => track.stop());
+    }
 
  // Höchste ID ermitteln
     function getMaxId(callback) {
@@ -467,10 +501,10 @@ function processScannedBarcode(barcode) {
 openFormBtn.onclick = function() {
     addMedBtnCard.style.display = "none";
         addMedBtn.style.display ="block";
+        addMedBtn.innerText = addMedBtn.getAttribute('data-text-normal');
     popupForm.style.display = "flex";
      isEditing = false; // Setze den Modus auf Hinzufügen
         document.getElementById("id").value = ""; // ID bei Hinzufügen zurücksetzen
-        startScanner();
     }
 
 // Schließt das Popup-Formular
@@ -562,6 +596,8 @@ openFormBtn.onclick = function() {
         newRow.insertCell(12); // Leere Zelle für "Zuletzt bestellt"
         
         const actionsCell = newRow.insertCell(13);
+
+        // ----- BEARBEITEN BUTTON
         const bearbeitenButton = document.createElement("button");
         bearbeitenButton.textContent = "BE";
         bearbeitenButton.onclick = function() {
@@ -570,6 +606,8 @@ openFormBtn.onclick = function() {
         
         actionsCell.appendChild(bearbeitenButton);
 
+
+        // ------ BESTELLEN BUTTON
         const bestellenButton = document.createElement("button");
         bestellenButton.textContent = "Or";
         bestellenButton.onclick = function() {
@@ -582,6 +620,8 @@ openFormBtn.onclick = function() {
         };
         actionsCell.appendChild(bestellenButton);
 
+
+        // Daten in DATENBANK ÜBERTRAGEN
         const dataRef = ref(database, 'medications/' + uniqueId);
         set(dataRef, {
             id: uniqueId,
@@ -606,6 +646,7 @@ openFormBtn.onclick = function() {
         currentRow = row;
         addMedBtnCard.style.display = "none";
         addMedBtn.style.display ="block";
+        addMedBtn.innerText = addMedBtn.getAttribute('data-text-large');
 
         document.getElementById("priority").value = row.cells[1].textContent;
         document.getElementById("brand").value = row.cells[2].textContent;
@@ -798,7 +839,6 @@ openFormBtn.onclick = function() {
     loadData();
 });
 
-
 // Sortierfunktion
 function sortTable(columnIndex, ascending) {
     const table = document.getElementById("medTable");
@@ -856,39 +896,120 @@ document.getElementById('medSearchInput').addEventListener('input', function() {
 
 
 
+
+
+
+
+
 /*********KAMERA FÜR BARCODE SCANNER */
 document.addEventListener("DOMContentLoaded", function () {
-    // Barcode-Scanner initialisieren
-    function startScanner() {
-        Quagga.init({
-            inputStream: {
-                type: "LiveStream",
-                target: document.getElementById("scanner"), // Kamera-Container
-                constraints: {
-                    facingMode: "environment" // Rückkamera
-                }
-            },
-            decoder: {
-                readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
+
+   // Funktion zur Verarbeitung des gescannten Barcodes
+function processScannedBarcode(barcode) {
+    const dataRef = ref(database, 'medications');
+
+    onValue(dataRef, (snapshot) => {
+        let found = false;
+
+        // Durchlaufe alle Medikamente in der Datenbank
+        snapshot.forEach((childSnapshot) => {
+            const medication = childSnapshot.val();
+
+            // Prüfen, ob der Barcode in der Barcode-Liste enthalten ist
+            if (medication.barcodes && medication.barcodes.includes(barcode)) {
+                found = true;
+
+                // Bestand erhöhen
+                const updatedStorage = parseInt(medication.storage, 10) + 1;
+
+                // Aktualisierung in Firebase
+                const medicationRef = ref(database, `medications/${medication.id}`);
+                update(medicationRef, {
+                    storage: updatedStorage,
+                    lastUpdated: new Date().toLocaleDateString(),
+                });
+
+                // Erfolgsmeldung anzeigen
+                alert(`Bestand von ${medication.brand} wurde aktualisiert. Neuer Bestand: ${updatedStorage}`);
+                loadData(); // Tabelle und Karten aktualisieren
             }
-        }, function (err) {
-            if (err) {
-                console.error(err);
-                alert("Fehler beim Starten des Scanners.");
-                return;
-            }
-            Quagga.start();
         });
+
+        if (!found) {
+            // Wenn Barcode nicht gefunden wurde
+            alert("Medikament nicht gefunden. Bitte neues Medikament hinzufügen.");
+            openFormBtn.click(); // Öffnet das Formular
+            document.getElementById("barcodeInput").value = barcode; // Barcode vorausfüllen
+        }
+    }, { onlyOnce: true });
+}
+
+ // Barcode-Scanner initialisieren
+    function startScanner() {
+    const scannerElement = document.getElementById("scanner");
+    if (!scannerElement) {
+        console.error("Scanner element not found");
+        alert("Scanner element not found");
+        return;
     }
 
-    // Event-Listener für Kamera starten
-    document.getElementById("startScannerBtn").addEventListener("click", () => {
-        startScanner();
+    Quagga.init({
+        inputStream: {
+            type: "LiveStream",
+            target: scannerElement, // Kamera-Container
+            constraints: {
+                facingMode: { ideal: "environment" }, // Rückkamera bevorzugen
+                width: { min: 640, ideal: 1280, max: 1920 }, // Auflösung anpassen
+                height: { min: 480, ideal: 720, max: 1080 }
+            }
+            
+        },
+        decoder: {
+            readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
+        }
+
+    }, function (err) {
+        if (err) {
+            console.error(err);
+            alert("Fehler beim Starten des Scanners.");
+            return;
+        }
+        Quagga.start();
+    });
+    alert("Erfolgreich gescannt!");
+}
+
+// Event-Listener für Kamera starten
+document.getElementById("startScannerBtn").addEventListener("click", () => {
+    startScanner();
+});
+
+// Event-Listener für Kamera stoppen
+document.getElementById("stopScannerBtn").addEventListener("click", () => {
+    Quagga.stop();
+});
+
+    // Event-Listener für Barcode-Scanner (Kamera-Unterstützung)
+    Quagga.onDetected(function (result) {
+        if (result && result.codeResult && result.codeResult.code) {
+            const barcode = result.codeResult.code; // Erkannten Barcode erfassen
+            document.getElementById("barcodeResult").innerText = `Barcode erkannt: ${barcode}`;
+
+            // Aufruf der bestehenden Funktion zur Verarbeitung
+            processScannedBarcode(barcode);
+
+            // Scanner stoppen nach erfolgreicher Erkennung
+            Quagga.stop();
+        }
     });
 
-    // Event-Listener für Kamera stoppen
-    document.getElementById("stopScannerBtn").addEventListener("click", () => {
-        Quagga.stop();
+    // Event-Listener für Barcode-Scanner (Enter-Taste)
+    document.addEventListener('keydown', (event) => {
+        const inputField = document.getElementById('barcodeInput');
+        if (event.key === 'Enter' && inputField.value) {
+            const scannedBarcode = inputField.value.trim();
+            processScannedBarcode(scannedBarcode);
+            inputField.value = ""; // Eingabefeld leeren
+        }
     });
-    
 });
