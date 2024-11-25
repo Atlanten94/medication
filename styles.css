@@ -11,8 +11,6 @@ header {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Schatten für visuelle Trennung */
 }
 
-
-
 .header-container {
     display: grid;
     grid-template-areas: "left center right";
@@ -85,6 +83,20 @@ nav{
     text-align: center;
 }
 
+.medSearch
+{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.medSearchInput{
+    width: 200px;
+    height: 30px;
+    text-align: center;
+    text-justify: center;
+}
+
 /* Button zum Öffnen des Formulars */
 #openFormBtn {
     float:right;
@@ -95,6 +107,7 @@ nav{
     color: white;
     cursor: pointer;
     transition: transform 0.2s ease;
+    margin-left: 20px;
 }
 
 #openFormBtn:hover {
@@ -109,16 +122,38 @@ nav{
     content:attr(data-text-normal);
 }
 
-/* Popup-Formular-Stil */
-.popupForm {
+/******************SCANNER CONTAINER*********************/
+#scanner-container {
     display: none;
     position: fixed;
     z-index: 999;
+    width: 100%;
+    height: 100%;
+    padding:10px;
+    overflow: auto;
+    background-color: rgba(0, 50, 95, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+#scanner-container h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* *********************************************************** MEDIKAMENTEN HINZUFÜGEN FORMULAR *******************************************************************************/
+/* ******************************************************************************************************************************************/
+/* ******************************************************************************************************************************************/
+.popupForm {
+    display: none;
+    position: fixed;
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow:auto;
     background-color: rgba(0,0,0,0.4);
     justify-content: center;
     align-items: center;
@@ -136,6 +171,8 @@ nav{
 }
 
 .popupContent {
+    display:block;
+    position:fixed;
     background-color: white;
     margin: auto;
     padding: 20px;
@@ -223,6 +260,9 @@ nav{
     cursor: pointer;
 }
 
+/* ***********************************************************           M E D I K A M E N T E N         T A B E L L E         *******************************************************************************/
+/* ******************************************************************************************************************************************/
+/* ******************************************************************************************************************************************/
 #medTable {
     font-size: 12px; /* Kleinere Schrift für bessere Übersicht */
     border-bottom: 2px solid rgb(62, 62, 62);
@@ -261,27 +301,10 @@ tbody td {
     max-height: calc(100vh - 250px);
 }
 
-
-
-
 .table-responsive thead {
     position: sticky;
     top: 0;
     z-index: 1;
-}
-
-.medSearch
-{
-    display:flex;
-    justify-content:center;
-    align-items: center;
-}
-
-.medSearchInput{
-    width: 200px;
-    height: 30px;
-    text-align: center;
-    text-justify: center;
 }
 
 table{
@@ -296,6 +319,31 @@ td{
     color: #00325f;
     padding: 5px;
 }
+
+.table button {
+    display: inline-block;
+    text-align: center;
+    border:none;
+    margin:1px;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #00325f;/* Bootstrap Primary-Farbe */
+    color: #fff; /* Textfarbe */
+    border-radius: 0.375rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.table button:hover {
+    background-color: #0056b3; /* Hover-Farbe */
+    border-color: #0056b3;
+}
+
+.table button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.5); /* Fokus-Rahmen */
+}
+
 
 #medId
 {
@@ -372,17 +420,17 @@ td{
     /** P O P U P F O R M U L A R**/
     #medFormular{
         grid-template-columns: 1fr; /* Zwei Spalten */
-        gap: 15px;
+        gap: 5px;
         padding:0 30px 0 30px;
     }
 
     .popupContent {
         position:fixed;
-        top:145px;
+        top:20px;
         width: 100%;
         height: calc(100% - 60px); /* Adjust height to be below the header */
         background-color: #fff;
-        padding: 20px;
+        padding: 10px;
         border-radius: 10px;
         overflow-y: auto;
     }
@@ -395,23 +443,34 @@ td{
 
     .popupContent label {
         flex: 1;
-        font-size: 1.2em;
     }
 
     .popupContent input,
     .popupContent select {
         flex: 2;
-        font-size: 1.2em;
         padding: 5px;
+    }
+
+    .checkboxContainer {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 10px;
+        margin-right:50px;
     }
 }
 /******************************** R E S P O N S I V E *****************************************************/
 
-
-
-
-
 @media (max-width: 991.98px) {
+    #openFormBtn::after {
+        content:attr(data-text-large);
+    }
+
+    #openFormBtn{
+        max-width:2.7rem;
+        height:auto;
+    }
+
     .header-link img {
         width: 80px; /* Kleinere Größe für Tablets */
         height: auto;
@@ -449,18 +508,14 @@ td{
     /* P O P U P F O R M U L A R*/
     .popupContent {
         position:fixed;
-        top:139px;
+        top:20px;
     }
 }
 
 @media (max-width: 768px) {
 
-    #openFormBtn::after {
-        content:attr(data-text-large);
-    }
-
     #openFormBtn{
-        max-width:50px;
+        max-width:2.7rem;
         height:auto;
     }
 
@@ -514,8 +569,8 @@ td{
     /* P O P U P F O R M U L A R*/
     .popupContent {
         position:fixed;
-        top:113px;
-        padding:20px;
+        top:20px;
+        padding:10px;
         padding-left:10px;
     }
 
