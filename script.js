@@ -428,7 +428,7 @@ function startScanner() {
             }
         },
         decoder: {
-            readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
+            readers: ["ean_8_reader"] // EAN-8 für Medikamenten-Barcodes
         },
         locate: true, // Versuche, den Barcode im Bild zu lokalisieren
         locator: {
