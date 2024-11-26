@@ -445,11 +445,6 @@ function startScanner() {
         Quagga.start(); // Scanner starten
         console.log("Quagga started successfully");
     });
-
- // Überprüfe die Displaygröße und passe die constraints an
-    if (window.innerWidth < 576) {
-        constraints.advanced = [{ zoom: 4 }];
-    }
  
 }
 
