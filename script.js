@@ -417,6 +417,11 @@ function startScanner() {
         return;
     }
 
+  // Überprüfe die Displaygröße und passe die constraints an
+    if (window.innerWidth < 576) {
+        constraints.advanced = [{ zoom: 4 }];
+    }
+ 
     Quagga.init({
         inputStream: {
             type: "LiveStream",
