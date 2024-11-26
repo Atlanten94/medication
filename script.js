@@ -423,8 +423,8 @@ function startScanner() {
             target: scannerElement, // Kamera-Container
             constraints: {
                 facingMode: { ideal: "environment" }, // Rückkamera bevorzugen
-                width: { min: 640, ideal: 1280, max: 640 }, // Höhere Auflösung für bessere Erkennung
-                height: { min: 480, ideal: 720, max: 480 }
+                width: { min: 1920, ideal: 1920, max: 1920 }, // Höhere Auflösung für bessere Erkennung
+                height: { min: 1080, ideal: 1080, max: 1080 }
             }
         },
         decoder: {
