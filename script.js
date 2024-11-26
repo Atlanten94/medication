@@ -342,11 +342,6 @@ document.addEventListener("DOMContentLoaded", function () {
     loadData(); // Daten nach Aktualisierung neu laden
 });
 
-
-
-
-
-
 //********************************************** T A B E L L E *********************************************************/
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -365,6 +360,7 @@ document.addEventListener("DOMContentLoaded", function() {
 /************************************************     B A R C O D E S C A N N E R ****************************************** */
   // Funktion zur Verarbeitung des gescannten Barcodes
 function processScannedBarcode(barcode) {
+    alert('successfull!');
     const dataRef = ref(database, 'medications');
 
     onValue(dataRef, (snapshot) => {
@@ -412,8 +408,8 @@ document.getElementById("startScannerBtn").addEventListener("click", function ()
     startScanner(); // Wird beim Klick aufgerufen
 });
 
- // Barcode-Scanner initialisieren
-    function startScanner() {
+// Barcode-Scanner initialisieren
+function startScanner() {
     const scannerElement = document.getElementById("scanner");
     if (!scannerElement) {
         console.error("Scanner element not found");
@@ -427,57 +423,62 @@ document.getElementById("startScannerBtn").addEventListener("click", function ()
             target: scannerElement, // Kamera-Container
             constraints: {
                 facingMode: { ideal: "environment" }, // Rückkamera bevorzugen
-            width: { min: 320, ideal: 320, max: 320 }, // Standardauflösung
-            height: { min: 240, ideal: 240, max: 240 }
+                width: { min: 640, ideal: 1280, max: 640 }, // Höhere Auflösung für bessere Erkennung
+                height: { min: 480, ideal: 720, max: 480 }
             }
-            
         },
         decoder: {
             readers: ["ean_reader"] // EAN-13 für Medikamenten-Barcodes
+        },
+        locate: true, // Versuche, den Barcode im Bild zu lokalisieren
+        locator: {
+            patchSize: "large", // Größere Suchbereiche für bessere Erkennung
+            halfSample: false // Volle Bildgröße für bessere Erkennung
         }
-
     }, function (err) {
         if (err) {
             console.error(err);
             alert("Fehler beim Starten des Scanners.");
             return;
         }
-        Quagga.start();
+        console.log("Quagga initialized successfully");
+        Quagga.start(); // Scanner starten
+        console.log("Quagga started successfully");
     });
 }
 
-    // Event-Listener für Barcode-Scanner (Kamera-Unterstützung)
-    Quagga.onDetected(function (result) {
-        if (result && result.codeResult && result.codeResult.code) {
-            const barcode = result.codeResult.code; // Erkannten Barcode erfassen
-            document.getElementById("barcodeResult").innerText = `Barcode erkannt: ${barcode}`;
-
-            // Aufruf der bestehenden Funktion zur Verarbeitung
-            processScannedBarcode(barcode);
-
-            // Scanner stoppen nach erfolgreicher Erkennung
-            Quagga.stop();
-        }
-    });
-
-    // Event-Listener für Barcode-Scanner (Enter-Taste)
-    document.addEventListener('keydown', (event) => {
-        const inputField = document.getElementById('barcodeInput');
-        if (event.key === 'Enter' && inputField.value) {
-            const scannedBarcode = inputField.value.trim();
-            processScannedBarcode(scannedBarcode);
-            inputField.value = ""; // Eingabefeld leeren
-        }
-    });
-
-    // Barcode Scanner Schließen
-    closeBtnScanner.onclick = function() {
-        const scannerForm = document.getElementById("scanner-container");
-        scannerForm.style.display = "none";
+// Event-Listener für Barcode-Scanner (Kamera-Unterstützung)
+Quagga.onDetected(function (result) {
+    console.log("Quagga.onDetected wurde gestartet"); // Überprüfung, ob die Funktion gestartet wurde
+    if (result && result.codeResult && result.codeResult.code) {
+        const barcode = result.codeResult.code; // Erkannten Barcode erfassen
+        console.log(`Erkannter Barcode: ${barcode}`); // Barcode in der Konsole ausgeben
+        document.getElementById("barcodeResult").innerText = `Barcode erkannt: ${barcode}`;
+        // Aufruf der bestehenden Funktion zur Verarbeitung
+        processScannedBarcode(barcode);
+        // Scanner stoppen nach erfolgreicher Erkennung
         Quagga.stop();
-        const tracks = Quagga.CameraAccess.getActiveStream().getTracks(); // Aktive Tracks abrufen
-        tracks.forEach(track => track.stop());
+    } else {
+        console.log("Kein Barcode erkannt");
     }
+});
+
+// Event-Listener für Barcode-Scanner (Enter-Taste)
+document.addEventListener('keydown', (event) => {
+    const inputField = document.getElementById('barcodeInput');
+    if (event.key === 'Enter' && inputField.value) {
+        const scannedBarcode = inputField.value.trim();
+        processScannedBarcode(scannedBarcode);
+        inputField.value = ""; // Eingabefeld leeren
+    }
+});
+
+// Barcode Scanner Schließen
+document.getElementById("closeBtnScanner").onclick = function() {
+    const scannerForm = document.getElementById("scanner-container");
+    scannerForm.style.display = "none";
+    Quagga.stop();
+};
 
  // Höchste ID ermitteln
     function getMaxId(callback) {
@@ -877,6 +878,7 @@ document.querySelectorAll("#medTable th").forEach((th, index) => {
     });
 });
 
+
 document.getElementById('medSearchInput').addEventListener('input', function() {
     let filter = this.value.toLowerCase();
     let tableRows = document.querySelectorAll('#medTable tbody tr');
@@ -892,11 +894,6 @@ document.getElementById('medSearchInput').addEventListener('input', function() {
         card.style.display = text.includes(filter) ? '' : 'none';
     });
 });
-
-
-
-
-
 
 
 
