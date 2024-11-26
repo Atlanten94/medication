@@ -126,9 +126,9 @@ nav{
 #scanner-container {
     display: none;
     position: fixed;
-    z-index: 999;
-    width: 100%;
-    height: 100%;
+    z-index: 998;
+    width: 640px;
+    height: 480px;
     padding:10px;
     overflow: auto;
     background-color: rgba(0, 50, 95, 0.8);
@@ -145,10 +145,6 @@ nav{
     align-items: center;
 }
 
-#scannerElement {
-    width:100%;
-    height:100%;
-}
 #scanner-container h2 {
     color: white;
     text-align: center;
